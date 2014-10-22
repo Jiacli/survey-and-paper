@@ -23,8 +23,8 @@ amssymb,graphicx,epsfig,cite,psfrag,subfigure,algorithm,multirow,cases,balance}
 
 \begin{document}
 
-\title{Literature Survey -- Draft I \\ Unsupervised Feature Learning and Deep Learning}
-\author{Jiachen Li (Andrew ID: jiachenl)\\%
+\title{Literature Survey \\ Unsupervised Feature Learning and Deep Learning}
+\author{Jiachen Li\\%
 Language Technologies Institute, School of Computer Science, Pittsburgh, PA, 15213, USA\\
 Email: jiachenl@cs.cmu.edu
 }
@@ -90,7 +90,7 @@ Deep learning is a learning method where the deep architecture (e.g., multi-laye
 
 \subsection{Type of Deep Neural Nets}
 
-There are several types of deep neural nets, but deep belief networks and convolutional neural networks are two milestones in the realm of deep learning. Therefore, in this section, I'll mainly cover the details about these two types of deep learning architectures.
+There are several types of deep neural nets, but deep belief nets and convolutional neural nets are two milestones in the realm of deep learning. Before 2006, researchers tried different ways to train the multi-layer neural networks. Almost none of them is 
 
 \subsubsection{Deep Belief Nets (DBNs)}
 
@@ -121,17 +121,7 @@ Generally speaking, the training process of DBNs usually consists of two parts, 
 
 \subsubsection{Pre-Training}
 
-In the part of pre-training, one of the popular and easy-implement choice is the greedy layer-wise unsupervised pre-training \cite{greedy}. The key idea of this approach is to learn a hierarchy of features one level at a time, using unsupervised feature learning to learn a new transformation at each level to be composed with the previously learned transformations. During the learning phase, each iteration of unsupervised feature learning adds a new layer of weights to the whole deep neural network. Finally the set of layers could be combined to transform the input data into a set of learned high-level features through a series of non-linear transformation.
-
-TODO: another pre-training methods, RBM pre-training.
-
-\subsubsection{Fine-tuning}
-
-After pre-training, the weights between each adjacent layers can somehow reflect the relationship with the data themselves. Furthermore, in order to ensure a better performance, we use fine-tuning to adjust these weights according to different model types we assume.
-
-For the generative model,...
-
-For the discriminative model,...
+In the part of pre-training, one of the popular and easy-implement choice is the greedy layer-wise pre-training
 
 
 
@@ -139,32 +129,17 @@ For the discriminative model,...
 
 \section{Unsupervised Feature Learning Algorithms}
 
-In this section, I'll discuss in detail about several typical unsupervised feature learning algorithms. I'll not only cover the details about how them work, but also try to give explanations on why them work.
-
 
 \subsection{Learning Feature Combination}
 
-TODO
-
 \subsection{Learning Feature Hierarchy}
 
-TODO
-
-\subsection{Another algorithm}
-
-TODO
 
 \section{Applications of Unsupervised Feature Learning}
 
-In this section, I'll refer to some successful real world application to show the usage as well as the benefit of feature learning. The first example I'd like to show is the unsupervised feature learning in Image Recognition
-And the second example I want to show is about the unsupervised feature learning in speech recognition.
-
-\subsection{Unsupervised Feature Learning in Image Recognition}
-TODO
-
 \subsection{Unsupervised Feature Learning in Speech Recognition}
-TODO
 
+\subsection{Unsupervised Feature Learning in ...}
 
 
 
@@ -182,18 +157,18 @@ In this literature survey, ...
 I would like to thank...
 
 
-%\balance
+\balance
 \begin{thebibliography}{99}
 
 \bibitem{review} Y. Bengio, A. Courville, and P. Vincent, ``Representation Learning: A Review and New Perspectives,'' in \textit{IEEE Trans. Pattern Analysis and Machine Intelligence}, vol. 35, no. 8, pp. 1798--1828, 2013.
 
 \bibitem{self_taught} R. Raina, A. Battle, H. Lee, B. Packer, and A. Y. Ng. ``Self-taught learning: Transfer learning from unlabeled data,'' \textit{Proc. Int'l Conf. Machine Learning}, 2007.
-
+    
 \bibitem{new_frontier} I. Arel, D. C. Rose, and T. P. Karnowski, ``Research frontier: Deep machine learning-a new frontier in artificial intelligence research,'' \textit{Comp. Intell. Mag.}, vol. 5, no. 4, pp. 13--18, Nov. 2010.
-
+    
 \bibitem{Hinton} G. E. Hinton, S. Osindero, and Y. Teh, ``A fast learning algorithm for deep belief nets,'' \textit{Neural Computation}, 18, pp 1527--1554, 2006.
-
-\bibitem{greedy}  Y. Bengio, P. Lamblin, D. Popovici, and H. Larochelle, ``Greedy Layer-Wise Training of Deep Networks,'' \textit{Proc. Neural Information and Processing Systems}, 2006.
+    
+    
 
 \bibitem{dAE} P. Vincent, H. Larochelle, Y. Bengio, and P. Manzagol. ``Extracting and composing robust features with denoising autoencoders,'' \textit{Proc. Int'l Conf. Machine Learning}, 2008.
 \bibitem{CNN} H. Lee, R. Grosse, R. Ranganath, and A. Y. Ng, ``Convolutional deep belief networks for scalable unsupervised learning of hierarchical representations,'' \textit{Proc. Int'l Conf. Machine Learning}, 2009.
@@ -206,20 +181,11 @@ I would like to thank...
 
 \end{thebibliography}
 
-\section{SUMMARY}
 
-This is the first draft of my literature survey, I mainly finished: \\
-1. The framework of the entire survey, i.e. what I shouldp cover in my literature survey. (Since the unsupervised feature learning is indeed not a very small area, so it really takes me some time to think it over on what should be included.) \\
-2. The part of problem definition and background. \\
-3. Part of the algorithm, i.e. the deep learning architecture. \\
-4. Bibliography in full citation form. \\
 
-For the next survey draft, I'm planning to finish: \\
-1. The deep learning part. \\
-2. The algorithm part. \\
-3. One application example in the application part. \\
-4. Include some theoretical analysis. \\
-5. Polish the language usage.
+
+
+
 
 %\begin{table}[t]\label{Tab:1}
 %\centering \caption{$Required\ Interference\ Protection\
