@@ -25,7 +25,7 @@ amssymb,graphicx,epsfig,cite,psfrag,subfigure,algorithm,multirow,cases,balance}
 
 \title{Literature Survey -- Draft II \\ Unsupervised Feature Learning and Deep Learning}
 \author{Jiachen Li (Andrew ID: jiachenl)\\%
-Language Technologies Institute, School of Computer Science, Pittsburgh, PA, 15213, USA\\
+Language Technologies Institute, Carnegie Mellon University, Pittsburgh, PA, 15213, USA\\
 Email: jiachenl@cs.cmu.edu
 }
 
@@ -48,7 +48,7 @@ but even ruin the results. In this literature survey, I will do a review about t
 
 \section{Introduction}
 
-The performance of machine learning algorithms, especially the simpler ones  highly depends on how good the features are represented \cite{review}. For this reason, much of the effort in deploying machine learning algorithms in real problems has been paid to the process of feature extraction. During the past decades, feature extraction does play an very important role in the development of machine learning, where many of the research community works have been conducted on manually designing or manually engineering new features by domain knowledge and some other special techniques. For example, the MFCC feature in speech recognition and the HoG feature in computer vision. However, though these features may often contain the deep insights about a specific problem or some incredibly clever ideas, we cannot avoid the fact that the way to create such features costs a lot of human labor and the feature representation derived often cannot be extended to other problems, especially when we encounter into them in a new filed. So the problem comes up that is there any way to learn the feature representation automatically and is there any way to do better than the manually created features. Fortunately, the answer is yes to both of the questions, and the way is unsupervised feature learning.
+The performance of machine learning algorithms, especially the simpler ones  highly depends on how good the features are represented \cite{review}. For this reason, much of the effort in deploying machine learning algorithms in real problems has been paid to the process of feature extraction. During the past decades, feature extraction does play an very important role in the development of machine learning, where the machine learning research communities have spent a lot of efforts on manually designing or creating new features through domain knowledge and some other special techniques. For example, the MFCC feature in speech recognition and the HoG feature in computer vision. However, though these features may often contain the deep insights about a specific problem or some incredibly clever ideas, we cannot avoid the fact that the way to create such features costs a lot of human labor and the feature representation derived often cannot be extended to other problems, especially when we encounter into them in a new filed. So the problem comes up that is there any way to learn the feature representation automatically and is there any way to do better than the manually created features. Fortunately, the answer is yes to both of the questions, and the way is unsupervised feature learning.
 
 \subsection{What Is Unsupervised Feature Learning?}
 
@@ -59,11 +59,12 @@ The performance of machine learning algorithms, especially the simpler ones  hig
 \label{fig:ml_task}
 \end{figure}
 
-To answer the question that what is unsupervised feature learning, let's start with the discussing about the general framework of machine learning task. To start a machine learning task, as shown in Fig. \ref{fig:ml_task}, we should first do pre-precessing for the raw data, such as the data cleaning, and then perform feature extraction on the data processed. After that, we apply feature selection on the extracted feature and then use them for training models and doing specific tasks like classification or regression.
+To answer the question that what is unsupervised feature learning, let's start by looking at the general framework of solving a machine learning task. To solve a machine learning problem, as shown in Fig. \ref{fig:ml_task}, we should first do pre-precessing for the raw data, such as the data cleaning, and then perform feature extraction on the data processed. After that, we apply our feature extraction algorithm to extract the useful features, do feature selection on these extracted features and then use them for training models. With a well trained model, we can finally approach to our goals like classification or regression.
 
-In the above framework, the procedures of pre-processing, feature extraction and feature selection together can be called as the process of feature learning. And the term ``unsupervised'' means that we can perform feature learning without labelled data.
+In the above framework, the procedures of pre-processing, feature extraction and feature selection together can be summarized as the ``feature learning''. 
+Moreover, the term ``unsupervised'' means that we can this kind of feature learning procedures to be performed without our supervision (knowledge) or even without any of our help.
 
-\subsection{The Task in Unsupervised Feature Learning}
+\subsection{Differences with other Machine Learning Tasks}
 
 
 
@@ -75,13 +76,34 @@ There are two common unsupervised feature learning settings, depending on what t
 
 \subsection{Organization of this Review}
 
-The reminder of this literature survey is organized as follows: Section II defines the learning problem formulation. Section III introduce the deep learning architecture. Section IV presents different learning algorithms while a few successful examples are then given in section V. Finally, the conclusion and potential future work are drawn in section VI.
+The reminder of this literature survey is organized as follows: Section II defines the feature learning problem and the learning strategy. Section III introduces the deep learning architecture. Section IV presents different learning algorithms while a few successful examples are then given in section V. Finally, the conclusion and potential future work are drawn in section VI.
 
-\section{Problem formulation}
+\section{Feature Learning Problem and Learning Strategy}
 
-Suppose that we have a large set labelled or unlabelled data as input, i.e., $$\mathcal{S}=\{\mathbf{x}^{(1)},\mathbf{x}^{(2)},\mathbf{x}^{(3)},\ldots\}, \ \mathbf{x}^{(i)}\in\mathcal{R}^n.$$ Then what we want to do in unsupervised feature learning problem is to train a model $\Psi(\cdot)$ that can extract rich and high-level structures (as the high-level features) from the origin data.
+Suppose that we have a large set labelled or unlabelled data as input, i.e., $$\mathcal{S}=\{\mathbf{x}^{(1)},\mathbf{x}^{(2)},\mathbf{x}^{(3)},\ldots\}, \ \mathbf{x}^{(i)}\in\mathcal{R}^n.$$
+Then what the feature learning wants to do is to train a model 
+\begin{equation}
+\Psi(\mathbf{x}):\mathcal{X} \rightarrow \mathcal{F},
+\end{equation}
+which can extract rich and high-level structures (as the high-level features) from the origin input space ($\mathcal{X}$) to the feature space ($\mathcal{F}$). So the problem is how can we let the machine automatically learn such kinds of feature?
 
-\section{Deep Learning Architecture}
+The answer to this question is to learn the feature by levels or layers, which means that to learn the final representation of the data, we may start by learning some lower level representation of the data (low level feature). Next, with the combination of these low level features, we can then further learn some higher level representation of the data (high level feature). So, if we continue this process, then we can finally learn a good representation of the data.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=65mm]{feat_level.pdf}
+\caption{An illustration of learning feature representation by levels \cite{face}.}
+\label{fig:feat_level}
+\end{figure}
+
+
+This layer-based learning strategy is first inspired by the study of our vision system, where the researchers reveal that information processing in our visual system has levels. For example, as shown in Fig. \ref{fig:feat_level}, if our visual system want to learn some representations of different faces with the pixel input from eyes, it may first try to learn the representation of edges (low level feature) from the input pixels. Then, with the combination of different edges, it can further learn the representation of different object parts on our faces, such as noises, mouses and so on (medium level feature). Finally, with the combination of these different object parts, we can learn to form different faces, which can be regarded as the high level feature.
+
+\begin{remark}
+The layer-based learning strate
+\end{remark}
+
+\section{Feature Learning Models: From Shallow to Deep}
 
 \subsection{Background and Motivation}
 
@@ -94,12 +116,6 @@ There are several types of deep neural nets, but deep belief networks and convol
 
 \subsubsection{Deep Belief Nets (DBNs)}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=90mm]{dbn.pdf}
-\caption{Illustration of deep belief network framework\cite{new_frontier}.}
-\label{fig:dbn}
-\end{figure}
 
 DBNs is a hybrid model consisting of two parts. As shown in Fig. \ref{fig:dbn}, the top two levels are undirected graph model which form the associative memory, the remaining layers are directed graph model which is actually a stacked Restricted Boltzmann Machines (RBM). Different from the CNNs, DBNs is a stochastically learning architecture whose object
 function depends on the learning purpose. Generally speaking, DBNs can be trained as a discriminative model or a generative model. In Fig. \ref{fig:dbn} , the discriminative model is a ``bottoms-up'' approach (red arrow), trying to
@@ -107,7 +123,12 @@ learn the detection weights via optimizing a posterior probability $P(L|O)$, whe
 
 The greatest advantage of DBNs is its capability of learning multi-level representation of feature, which is achieved through a layer-wise training strategy where the higher-level features are learned based on the features produced by the previous layers. Therefore, the higher-level features are believed to be more complicated and can better represent the information extracted from the structure of input data. Furthermore, we can also prove that after we adding another layer of features, we improve a variational lower bound on the log probability of the training data \cite{Hinton}.
 
-
+\begin{figure}[t]
+\centering
+\includegraphics[width=75mm]{dbn.pdf}
+\caption{Illustration of deep belief network framework\cite{new_frontier}.}
+\label{fig:dbn}
+\end{figure}
 
 \subsubsection{Deep Convolutional Neural Nets (CNNs)}
 
@@ -115,7 +136,7 @@ TODO
 
 \subsection{How to Train the Deep Neural Nets}
 
-In this part, I'll discuss the training strategy in deep learning architecture. We will have a focus on the training of DBNs since it is more typical in the deep architecture.
+In this part, I'll discuss the training strategy in deep learning architecture. We will focus on the training of DBNs since it is not only one of the typical models in deep learning, but also very suitable for the feature learning.
 
 Generally speaking, the training process of DBNs usually consists of two parts, one is the pre-training, the other is fine-tuning.
 
@@ -188,6 +209,9 @@ I would like to thank...
 \bibitem{review} Y. Bengio, A. Courville, and P. Vincent, ``Representation Learning: A Review and New Perspectives,'' in \textit{IEEE Trans. Pattern Analysis and Machine Intelligence}, vol. 35, no. 8, pp. 1798--1828, 2013.
 
 \bibitem{self_taught} R. Raina, A. Battle, H. Lee, B. Packer, and A. Y. Ng. ``Self-taught learning: Transfer learning from unlabeled data,'' \textit{Proc. Int'l Conf. Machine Learning}, 2007.
+
+\bibitem{face} H. Lee, R. Grosse, R. Ranganath, and A. Y. Ng, ``Unsupervised Learning of Hierarchical Representations with Convolutional Deep Belief Networks'' \textit{Communications of the ACM}, vol. 54, no. 10, pp. 95--p103, 2011.
+
 
 \bibitem{new_frontier} I. Arel, D. C. Rose, and T. P. Karnowski, ``Research frontier: Deep machine learning-a new frontier in artificial intelligence research,'' \textit{Comp. Intell. Mag.}, vol. 5, no. 4, pp. 13--18, Nov. 2010.
 
