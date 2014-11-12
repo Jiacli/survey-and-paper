@@ -54,14 +54,14 @@ The performance of machine learning algorithms, especially the simpler ones  hig
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=90mm]{feature_learning.pdf}
+\includegraphics[width=85mm]{feature_learning.pdf}
 \caption{The general framework of machine learning task.}
 \label{fig:ml_task}
 \end{figure}
 
 To answer the question that what is unsupervised feature learning, let's start by looking at the general framework of solving a machine learning task. To solve a machine learning problem, as shown in Fig. \ref{fig:ml_task}, we should first do pre-precessing for the raw data, such as the data cleaning, and then perform feature extraction on the data processed. After that, we apply our feature extraction algorithm to extract the useful features, do feature selection on these extracted features and then use them for training models. With a well trained model, we can finally approach to our goals like classification or regression.
 
-In the above framework, the procedures of pre-processing, feature extraction and feature selection together can be summarized as the ``feature learning''. 
+In the above framework, the procedures of pre-processing, feature extraction and feature selection together can be summarized as the ``feature learning''.
 Moreover, the term ``unsupervised'' means that we can this kind of feature learning procedures to be performed without our supervision (knowledge) or even without any of our help.
 
 \subsection{Differences with other Machine Learning Tasks}
@@ -81,7 +81,7 @@ The reminder of this literature survey is organized as follows: Section II defin
 \section{Feature Learning Problem and Learning Strategy}
 
 Suppose that we have a large set labelled or unlabelled data as input, i.e., $$\mathcal{S}=\{\mathbf{x}^{(1)},\mathbf{x}^{(2)},\mathbf{x}^{(3)},\ldots\}, \ \mathbf{x}^{(i)}\in\mathcal{R}^n.$$
-Then what the feature learning wants to do is to train a model 
+Then what the feature learning wants to do is to train a model
 \begin{equation}
 \Psi(\mathbf{x}):\mathcal{X} \rightarrow \mathcal{F},
 \end{equation}
@@ -89,15 +89,17 @@ which can extract rich and high-level structures (as the high-level features) fr
 
 The answer to this question is to learn the feature by levels or layers, which means that to learn the final representation of the data, we may start by learning some lower level representation of the data (low level feature). Next, with the combination of these low level features, we can then further learn some higher level representation of the data (high level feature). So, if we continue this process, then we can finally learn a good representation of the data.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=65mm]{feat_level.pdf}
-\caption{An illustration of learning feature representation by levels \cite{face}.}
-\label{fig:feat_level}
-\end{figure}
+
 
 
 This layer-based learning strategy is first inspired by the study of our vision system, where the researchers reveal that information processing in our visual system has levels. For example, as shown in Fig. \ref{fig:feat_level}, if our visual system want to learn some representations of different faces with the pixel input from eyes, it may first try to learn the representation of edges (low level feature) from the input pixels. Then, with the combination of different edges, it can further learn the representation of different object parts on our faces, such as noises, mouses and so on (medium level feature). Finally, with the combination of these different object parts, we can learn to form different faces, which can be regarded as the high level feature.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=60mm]{feat_level.pdf}
+\caption{An illustration of learning feature representation by levels \cite{face}.}
+\label{fig:feat_level}
+\end{figure}
 
 \begin{remark}
 The layer-based learning strate
@@ -125,7 +127,7 @@ The greatest advantage of DBNs is its capability of learning multi-level represe
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=75mm]{dbn.pdf}
+\includegraphics[width=80mm]{dbn.pdf}
 \caption{Illustration of deep belief network framework\cite{new_frontier}.}
 \label{fig:dbn}
 \end{figure}
