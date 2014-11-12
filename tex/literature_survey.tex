@@ -102,41 +102,47 @@ This layer-based learning strategy is first inspired by the study of our vision 
 \end{figure}
 
 \begin{remark}
-The layer-based learning strate
+The layer-based learning strategy is reasonable as it is consistent with way human used to learn things. For example, if want learn the meaning of a paragraph, we may first want to learn the meaning of each single word.
+Next, with the meaning of each word and their combination in the sentences, we can learn the meaning of each sentence. Then with the meaningful of each sentence, it is much more easier for us to learn the meaning of the whole paragraph.
 \end{remark}
 
-\section{Feature Learning Models: From Shallow to Deep}
+\section{Feature Learning Models: Deep Neural Networks}
 
 \subsection{Background and Motivation}
 
-Deep learning is a learning method where the deep architecture (e.g., multi-layer) is applied to perform the intellectual learning like learning to represent feature. This ability, together with the efficient learning algorithms that can ensure this ability, point out a new direction in the task of unsupervised feature learning, i.e., learning deep representation of the feature. In this section, I will review the work related to the deep learning in recent years, with respect to different types of architectures and learning algorithms. The application of it in unsupervised feature learning will be discussed in the next section.
+Deep neural networksp is a learning method where the deep architecture (e.g., multi-layer) is applied to perform the intellectual learning like learning to represent feature. This ability, together with the efficient learning algorithms that can ensure this ability, point out a new direction in the task of unsupervised feature learning, i.e., learning deep representation of the feature. In this section, I will review the work related to the deep learning in recent years, with respect to different types of architectures and learning algorithms. The application of it in unsupervised feature learning will be discussed in the next section.
 
+\subsection{Deep Belief Networks (DBNs)}
 
-\subsection{Type of Deep Neural Nets}
-
-There are several types of deep neural nets, but deep belief networks and convolutional neural networks are two milestones in the realm of deep learning. Therefore, in this section, I'll mainly cover the details about these two types of deep learning architectures.
-
-\subsubsection{Deep Belief Nets (DBNs)}
+There are several types of deep neural networks such as deep belief networks (DBNs) and convolutional neural networks (CNNs). Among them DBNs is not only one of the milestones in the realm of deep learning, but also very capable for unsupervised feature learning. Therefore, in this part, I'll mainly focus on DBNs, and cover its details in learning feature representation.
 
 
 DBNs is a hybrid model consisting of two parts. As shown in Fig. \ref{fig:dbn}, the top two levels are undirected graph model which form the associative memory, the remaining layers are directed graph model which is actually a stacked Restricted Boltzmann Machines (RBM). Different from the CNNs, DBNs is a stochastically learning architecture whose object
 function depends on the learning purpose. Generally speaking, DBNs can be trained as a discriminative model or a generative model. In Fig. \ref{fig:dbn} , the discriminative model is a ``bottoms-up'' approach (red arrow), trying to
-learn the detection weights via optimizing a posterior probability $P(L|O)$, where $L$ indicates the label while $O$ is the observation; the generative model is a ``top-down'' approach (green arrow), trying to learn the generative weights via optimizing a joint probability $P(L,O)$. The details of the learning strategies will be discussed in the next part of this section.
+learn the detection weights via optimizing a posterior probability $P(L|O)$, where $L$ indicates the label while $O$ is the observation; the generative model is a ``top-down'' approach (green arrow), trying to learn the generative weights via optimizing a joint probability $P(L,O)$.
+
+%The details of the learning strategies will be discussed in the next part of this section.
+
+Another description of DBNs is from Hinton et al. \cite{Hinton}, where they showed that Restricted Boltzmann Machine (RBMs) can be stacked and trained in a greedy manner to form so-called DBNs. They model the joint distribution between observed vector $\mathbf{x}$ and the $l$ hidden layers as:
+\begin{equation}
+P(\mathbf{x},h^1,\ldots,h_l)=\Big(\prod_{k=1}^{l-2} P(h^k|h^{k+1})\Big)
+P(h^{l-1},h^l),
+\end{equation}
+where $x=h^0,\ P(h^{k-1}|h^k)$ is a conditional distribution for the visible units conditioned on the hidden units of the RBM at level $k$, and $P(h^{l-1},h^l)$ is the visible-hidden joint distribution in the top-level RBM.
+
 
 The greatest advantage of DBNs is its capability of learning multi-level representation of feature, which is achieved through a layer-wise training strategy where the higher-level features are learned based on the features produced by the previous layers. Therefore, the higher-level features are believed to be more complicated and can better represent the information extracted from the structure of input data. Furthermore, we can also prove that after we adding another layer of features, we improve a variational lower bound on the log probability of the training data \cite{Hinton}.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=80mm]{dbn.pdf}
-\caption{Illustration of deep belief network framework\cite{new_frontier}.}
+\caption{Illustration of deep belief networks\cite{new_frontier}.}
 \label{fig:dbn}
 \end{figure}
 
-\subsubsection{Deep Convolutional Neural Nets (CNNs)}
+\subsection{Challenge of Training Deep Neural Networks}
 
-TODO
-
-\subsection{How to Train the Deep Neural Nets}
+\subsection{Train DBNs for Feature Learning}
 
 In this part, I'll discuss the training strategy in deep learning architecture. We will focus on the training of DBNs since it is not only one of the typical models in deep learning, but also very suitable for the feature learning.
 
@@ -220,6 +226,9 @@ I would like to thank...
 \bibitem{Hinton} G. E. Hinton, S. Osindero, and Y. Teh, ``A fast learning algorithm for deep belief nets,'' \textit{Neural Computation}, 18, pp 1527--1554, 2006.
 
 \bibitem{greedy}  Y. Bengio, P. Lamblin, D. Popovici, and H. Larochelle, ``Greedy Layer-Wise Training of Deep Networks,'' \textit{Proc. Neural Information and Processing Systems}, 2006.
+    
+\bibitem{Frank} F. Seide, G. Li, and D. Yu, ``Conversational Speech Transcription Using Context-Dependent Deep Neural Networks'' \textit{Interspeech}, 2011.
+
 
 \bibitem{dAE} P. Vincent, H. Larochelle, Y. Bengio, and P. Manzagol. ``Extracting and composing robust features with denoising autoencoders,'' \textit{Proc. Int'l Conf. Machine Learning}, 2008.
 \bibitem{CNN} H. Lee, R. Grosse, R. Ranganath, and A. Y. Ng, ``Convolutional deep belief networks for scalable unsupervised learning of hierarchical representations,'' \textit{Proc. Int'l Conf. Machine Learning}, 2009.
