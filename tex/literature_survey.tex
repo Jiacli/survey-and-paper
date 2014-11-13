@@ -1,6 +1,6 @@
 \documentclass[conference]{IEEEtran}
 \usepackage{pifont}
-\usepackage{times,amsmath,color,
+\usepackage{times,amsmath,color,tabularx,caption,
 amssymb,graphicx,epsfig,cite,psfrag,subfigure,algorithm,multirow,cases,balance}
 \newtheorem{claim}{Claim}
 \newtheorem{guess}{Conjecture}
@@ -76,7 +76,7 @@ There are two common unsupervised feature learning settings, depending on what t
 
 \subsection{Organization of this Review}
 
-The reminder of this literature survey is organized as follows: Section II defines the feature learning problem and the learning strategy. Section III introduces the deep learning architecture. Section IV presents different learning algorithms while a few successful examples are then given in section V. Finally, the conclusion and potential future work are drawn in section VI.
+The reminder of this literature survey is organized as follows: Section II defines the feature learning problem and the learning strategy. Section III introduces the models and algorithms for feature learning. A few successful examples are then given in section IV, and the conclusions and potential future works are drawn in section V.
 
 \section{Feature Learning Problem and Learning Strategy}
 
@@ -164,7 +164,7 @@ The greatest advantage of DBNs is its capability of learning multi-level represe
 After having motivated the need for deep architecture and the advantages of deep belief networks, now we turn to the difficult problem of training them.
 Experimental evidence suggests that training deep architectures is more difficult than training shallow architectures\cite{AI}.
 
-One of the biggest problems when applying traditional gradient-based training for deep neural networks is that the random initialized multi-layer neural networks gets stuck in ``apparent local minima or plateaus'', and it becomes more difficult to obtain good generalization as the architecture gets deeper. When starting from random initialization, the solutions obtained with deeper neural networks perform even worse than the solutions obtained for networks with 1 or 2 hidden layers. This happens even though $k+1$-layer nets can easily represent what a $k$-layer net can represent, but the converse is not true.
+One of the biggest problems when applying traditional gradient-based training for deep neural networks is that the random initialized multi-layer neural networks gets stuck in ``apparent local minima or plateaus'', and it becomes more difficult to obtain good generalization as the architecture gets deeperp. When starting from random initialization, the solutions obtained with deeper neural networks perform even worse than the solutions obtained for networks with 1 or 2 hidden layers. This happens even though $k+1$-layer nets can easily represent what a $k$-layer net can represent, but the converse is not true.
 
 So, to take advantages of deep architectures, we need a new way to train these models.
 
@@ -181,7 +181,7 @@ In the part of pre-training, one of the popular and easy-implement choice is the
 
 
 \begin{remark}
-If we regard the layer-wise pre-training as learning the representation of feature from the input data, then the whole pre-training process can be considered as learning the representation of the original data layer by layer. So, intuitively, learning the feature representation of data can be performed though training the deep neural networks.    
+If we regard the layer-wise pre-training as learning the representation of feature from the input data, then the whole pre-training process can be considered as learning the representation of the original data layer by layer. So, intuitively, learning the feature representation of data can be performed though training the deep neural networks.
 \end{remark}
 
 \subsubsection{Fine-tuning}
@@ -193,7 +193,7 @@ data. There¡¯s nothing new about the Back-propagation, the only thing we should 
 
 For the generative model, a Wake-Sleep algorithm is used to tune the generative weights. Wake is a bottom-up procedure, which uses the learning RBM approach to approximate the joint distribution showed in the following term
 \begin{align}
-&P(v,h_1,h_2,\ldots h_n) \nonumber \\ = &P(h_1|v)P(h_2|h_1,v)\cdots 
+&P(v,h_1,h_2,\ldots h_n) \nonumber \\ = &P(h_1|v)P(h_2|h_1,v)\cdots
 P(h_n|h_{n-1},\ldots,h_1,v).
 \end{align}
 Since detection weights are learned in this procedure, we can sample all the $v,h1,h2,\ldots,hn$. Then, these sampled data is used to tune the generative weights, which is to maximize term
@@ -214,24 +214,54 @@ In the previous sections,p I have shown that why should we study feature learnin
 \begin{figure}[t]
 \centering
 \includegraphics[width=80mm]{cd-dnn-hmm.pdf}
-\caption{An illustration of learning feature representation by levels \cite{face}.}
-\label{fig:feat_level}
+\caption{Diagram of the hybrid architecture in speech recognition employing a deep neural network \cite{cd-dnn-hmm}.}
+\label{fig:cd-dnn-hmm}
 \end{figure}
 
+Since the early 90¡¯s, artificial neural networks (ANNs) have
+been used to model the state emission probabilities of HMM
+speech recognizers. While traditional Gaussian mixture
+model (GMM-HMMs) models context dependency through tied
+context-dependent states, ANN-HMMs were never used to do so directly.
+Instead, neural networks were often factorized, e.g. into a monophone
+and a context-dependent part, or hierarchically decomposed. It has been commonly assumed that hundreds or thousands of triphone states were just too many to be accurately modeled or trained within a neural network.
+
+Only recently did Yu et al. discover
+that doing so is not only feasible but works very well \cite{cd-dnn-hmm}.
+As shown in Fig. \ref{fig:cd-dnn-hmm}, the Context-dependent Deep-Neural-Network HMMs (CD-DNN-
+HMMs) applies deep belief network as a feature learner to extract more powerful, more robust features and map them into different HMMs states. Utilizing Hinton's DBN pre-training (unsupervised feature learning) procedure, this model leads to a very promising results with a $22~33\%$ decrease in word error rate as shown in Table. I.
 
 
+\begin{table*}[ht]\label{Tab:1}
+\captionsetup{font={small}}
+\caption{Standard GMM-HMM vs. CD-DNN-HMM for single-pass speaker-independent recognition on five speech-to-text test sets. Also shown are our group's best-ever GMM-HMM result for three of the test sets. Transcription word-error rates are given in $\%$.}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+acoustic model \& training & recognition mode & \multicolumn{2}{c|}{RT03S}  & Hub5'00 & \multicolumn{2}{c|}{voicemails} & teleconf \\
+& & FSH & SW & SWB & MS& LDC &  \\
+\hline\hline
 
-\begin{remark}
-Sample remark...
-\end{remark}
+GMM 40-mix, ML, SWB 309h & single-pass SI & 30.2 & 40.9 & 26.5 & 45.0 & 33.5 & 35.2 \\
+GMM 40-mix, BMMI, SWB 309h & single-pass SI & 27.4&37.6 &23.6 &42.4 &30.8 &33.9 \\
+CD-DNN 7 layers x 2048, SWB 309h & single-pass SI & 18.5&27.5 &16.1 &32.9 &22.9 &24.4 \\
+(rel. change GMM BMMI¡úCD-DNN) & &(-33\%) &(-27\%) &(-32\%) &(-22\%) &(-26\%) &(-28\%) \\
+\hline\hline
+GMM 72-mix, BMMI, Fisher 2000h & multi-pass adaptive &18.6 &25.2 &17.1 & & & \\
+\hline
+\end{tabular}
+\end{table*}
 
+\subsection{Unsupervised Feature Learning in Information Retrieval}
+
+TODO:...
 
 \section{Conclusions}
 
-In this literature survey, ...
+Let machine learn the feature by themselves is fascinating as well as challenging, while the unsupervised feature learning gives us a chance to make it come true. In this literature survey, a broad overview of unsupervised feature learning on different aspects is given by answering the following questions, such as why we study unsupervised feature learning and deep learning, how to let machine learn feature representation by themselves, which model should we use for unsupervised feature learning and how can machine learning tasks benefit from unsupervised feature learning and deep learning. I not only show how the deep learning can be used for unsupervised feature learning, but also give an intuition about why it works. At last, many real world applications has been presented to show that unsupervised feature learning can be really helpful.
 
 \section*{Acknowledgement}
-I would like to thank...
+I would like to thank Prof. Eric Nyberg for his advice on my presentation and his constructive suggestions on this literature survey.
 
 
 %\balance
@@ -247,21 +277,24 @@ I would like to thank...
 \bibitem{new_frontier} I. Arel, D. C. Rose, and T. P. Karnowski, ``Research frontier: Deep machine learning-a new frontier in artificial intelligence research,'' \textit{Comp. Intell. Mag.}, vol. 5, no. 4, pp. 13--18, Nov. 2010.
 
 \bibitem{Hinton} G. E. Hinton, S. Osindero, and Y. Teh, ``A fast learning algorithm for deep belief nets,'' \textit{Neural Computation}, 18, pp 1527--1554, 2006.
-    
+
 \bibitem{visual} T. Serre, G. Kreiman, M. Kouh, C. Cadieu, U. Knoblich, and T. Poggio, ``A quantitative theory of immediate visual recognition,'' \textit{Progress in Brain Research, Computational Neuroscience: Theoretical Insights into Brain Function}, vol. 165, pp. 33--56, 2007.
-    
+
 \bibitem{AI} Y. Bengio, ``Learning deep architectures for AI,'' \textit{Foundations and Trends in Machine Learning}, vol 2, pp 1--127. Also published as a book. Now Publisher, 2009.
 
 \bibitem{greedy}  Y. Bengio, P. Lamblin, D. Popovici, and H. Larochelle, ``Greedy Layer-Wise Training of Deep Networks,'' \textit{Proc. Neural Information and Processing Systems}, 2006.
 
+\bibitem{cd-dnn-hmm} G. E. Dahl, D. Yu, L. Deng, and A. Acero. ``Context-Dependent Pre-Trained Deep Neural Networks for Large-Vocabulary Speech Recognition,'' \textit{IEEE Transactions on Audio, Speech and Language Processing}, vol. 20, no. 1, Jan. 2012.
+
+
 \bibitem{Frank} F. Seide, G. Li, and D. Yu, ``Conversational Speech Transcription Using Context-Dependent Deep Neural Networks'' \textit{Interspeech}, 2011.
-    
+
 
 
 \bibitem{dAE} P. Vincent, H. Larochelle, Y. Bengio, and P. Manzagol. ``Extracting and composing robust features with denoising autoencoders,'' \textit{Proc. Int'l Conf. Machine Learning}, 2008.
 \bibitem{CNN} H. Lee, R. Grosse, R. Ranganath, and A. Y. Ng, ``Convolutional deep belief networks for scalable unsupervised learning of hierarchical representations,'' \textit{Proc. Int'l Conf. Machine Learning}, 2009.
 \bibitem{why} D. Erhan, Y. Bengio, A. Courville, P. Manzagol, P. Vincent, and S. Bengio, ``Why Does Unsupervised Pre-training Help Deep Learning?'' \textit{Journal of Machine Learning Research}, 2010.
-\bibitem{kmeans} A. Coates and A. Y. Ng, ``Learning Feature Representations with K-means,'' \textit{Neural Networks: Tricks of the Trade}, Springer LNCS, 2012.
+%\bibitem{kmeans} A. Coates and A. Y. Ng, ``Learning Feature Representations with K-means,'' \textit{Neural Networks: Tricks of the Trade}, Springer LNCS, 2012.
 
 \bibitem{Yudong} L. Deng and D. Yu ``DEEP LEARNING: Methods and Applications,'' NOW Publishers, 2014.
 
@@ -271,18 +304,16 @@ I would like to thank...
 
 \section{SUMMARY}
 
-This is the first draft of my literature survey, I mainly finished: \\
-1. The framework of the entire survey, i.e. what I shouldp cover in my literature survey. (Since the unsupervised feature learning is indeed not a very small area, so it really takes me some time to think it over on what should be included.) \\
-2. The part of problem definition and background. \\
-3. Part of the algorithm, i.e. the deep learning architecture. \\
-4. Bibliography in full citation form. \\
+This is the second draft of my literature survey, I mainly finished: \\
+1. Main contents in all sections \\
+2. Added more backgrounds in deep learning (as required in presentation) \\
+3. Added first example in speech recognition. \\
 
-For the next survey draft, I'm planning to finish: \\
-1. The deep learning part. \\
-2. The algorithm part. \\
-3. One application example in the application part. \\
-4. Include some theoretical analysis. \\
-5. Polish the language usage.
+For the next final version, I'm planning to finish: \\
+1. Add more application examples \\
+2. Include more theoretical analysis. \\
+3. Add more figures to illustrate the key ideas. \\
+4. Polish the language usage.
 
 %\begin{table}[t]\label{Tab:1}
 %\centering \caption{$Required\ Interference\ Protection\
