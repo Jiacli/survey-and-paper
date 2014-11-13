@@ -92,7 +92,16 @@ The answer to this question is to learn the feature by levels or layers, which m
 
 
 
-This layer-based learning strategy is first inspired by the study of our vision system, where the researchers reveal that information processing in our visual system has levels. For example, as shown in Fig. \ref{fig:feat_level}, if our visual system want to learn some representations of different faces with the pixel input from eyes, it may first try to learn the representation of edges (low level feature) from the input pixels. Then, with the combination of different edges, it can further learn the representation of different object parts on our faces, such as noises, mouses and so on (medium level feature). Finally, with the combination of these different object parts, we can learn to form different faces, which can be regarded as the high level feature.
+This layer-based learning strategy is first inspired by the study of our vision system, where the researchers reveal that the mammal brain is organized in a deep architecture \cite{visual}
+with a given input percept represented at multiple levels of abstraction,
+each level corresponding to a different area of cortex. Humans
+often describe such concepts in hierarchical ways, with multiple levels
+of abstraction. The brain also appears to process information through
+multiple stages of transformation and representation. This is particularly
+clear in the primate visual system \cite{visual}, with its sequence of
+processing stages: detection of edges, primitive shapes, and moving up
+to gradually more complex visual shapes.
+For example, as shown in Fig. \ref{fig:feat_level}, if our visual system want to learn some representations of different faces with the pixel input from eyes, it may first try to learn the representation of edges (low level feature) from the input pixels. Then, with the combination of different edges, it can further learn the representation of different object parts on our faces, such as noises, mouses and so on (medium level feature). Finally, with the combination of these different object parts, we can learn to form different faces, which can be regarded as the high level feature.
 
 \begin{figure}[t]
 \centering
@@ -102,15 +111,25 @@ This layer-based learning strategy is first inspired by the study of our vision 
 \end{figure}
 
 \begin{remark}
-The layer-based learning strategy is reasonable as it is consistent with way human used to learn things. For example, if want learn the meaning of a paragraph, we may first want to learn the meaning of each single word.
+The layer-based learning strategy is reasonable as it is consistent with the way human used to learn things. For example, if want learn the meaning of a paragraph, we may first want to learn the meaning of each single word.
 Next, with the meaning of each word and their combination in the sentences, we can learn the meaning of each sentence. Then with the meaningful of each sentence, it is much more easier for us to learn the meaning of the whole paragraph.
 \end{remark}
 
-\section{Feature Learning Models: Deep Neural Networks}
+\section{Feature Learning: Models and Algorithms}
+
+Deep neural networks or deep learning is a learning model where the deep architecture is applied to perform the intellectual learning like learning to represent feature. This ability, together with the efficient learning algorithms that can ensure this ability, point out a new direction in the task of unsupervised feature learning, i.e., learning deep representation of the feature. In this section, I will review the work related to the deep learning in recent years, with a focus on some typical learning architectures and learning algorithms. The application of it in unsupervised feature learning will be discussed in the next section.
+
 
 \subsection{Background and Motivation}
 
-Deep neural networksp is a learning method where the deep architecture (e.g., multi-layer) is applied to perform the intellectual learning like learning to represent feature. This ability, together with the efficient learning algorithms that can ensure this ability, point out a new direction in the task of unsupervised feature learning, i.e., learning deep representation of the feature. In this section, I will review the work related to the deep learning in recent years, with respect to different types of architectures and learning algorithms. The application of it in unsupervised feature learning will be discussed in the next section.
+Deep learning methods aim at learning feature hierarchies with features from higher levels formed by the composition of the features from lower levels. Learning features at multiple levels of abstraction allows a system to learn complex functions mapping the input data to output feature, which is especially important for higher-level abstractions where humans often don't know how to specify the explicit feature extraction algorithms.
+
+Deep architecture refers to the model architecture that can learn multiple levels non-linear transformation. So that the depth of architecture refers to the number of levels of composition of non-linear transformation in the function learned. Most current popular learning algorithms such as Logistic Regression (no hidden layer), Support Vector Machine (one hidden layer) and Boosting (one hidden layer) are using the shallow architectures. However, inspired by the architectural depth of the brain, neural network researchers had wanted for decades to train deep multi-layer neural networks. Unfortunately, no successful attempts were reported: researchers reported positive experimental results with typically two or three levels (i.e., one or two hidden layers), but training deeper networks consistently yielded poorer results.
+
+In 2006, a breakthrough in feature learning and deep learning was initiated by Geoff Hinton, he introduced Deep Belief Networks (DBNs) together with a learning algorithm\cite{Hinton} and was quickly followed up in the same year by many others. The central idea, referred to as \textit{greedy layerwise unsupervised pre-training}, was to learn a hierarchy of features one level at a time, using unsupervised feature learning to learn a new transformation at each level to be composed with the previously learned transformations.
+
+Since 2006, deep networks for feature learning has been applied widely with success not only in classification tasks, but also in regression, dimensionality reduction, speech recognition, object segmentation, information retrieval, robotics, natural language processing and collaborative filtering\cite{AI}.
+
 
 \subsection{Deep Belief Networks (DBNs)}
 
@@ -142,6 +161,13 @@ The greatest advantage of DBNs is its capability of learning multi-level represe
 
 \subsection{Challenge of Training Deep Neural Networks}
 
+After having motivated the need for deep architecture and the advantages of deep belief networks, now we turn to the difficult problem of training them.
+Experimental evidence suggests that training deep architectures is more difficult than training shallow architectures\cite{AI}.
+
+One of the biggest problems when applying traditional gradient-based training for deep neural networks is that the random initialized multi-layer neural networks gets stuck in ``apparent local minima or plateaus'', and it becomes more difficult to obtain good generalization as the architecture gets deeper. When starting from random initialization, the solutions obtained with deeper neural networks perform even worse than the solutions obtained for networks with 1 or 2 hidden layers. This happens even though $k+1$-layer nets can easily represent what a $k$-layer net can represent, but the converse is not true.
+
+So, to take advantages of deep architectures, we need a new way to train these models.
+
 \subsection{Train DBNs for Feature Learning}
 
 In this part, I'll discuss the training strategy in deep learning architecture. We will focus on the training of DBNs since it is not only one of the typical models in deep learning, but also very suitable for the feature learning.
@@ -152,48 +178,45 @@ Generally speaking, the training process of DBNs usually consists of two parts, 
 
 In the part of pre-training, one of the popular and easy-implement choice is the greedy layer-wise unsupervised pre-training \cite{greedy}. The key idea of this approach is to learn a hierarchy of features one level at a time, using unsupervised feature learning to learn a new transformation at each level to be composed with the previously learned transformations. During the learning phase, each iteration of unsupervised feature learning adds a new layer of weights to the whole deep neural network. Finally the set of layers could be combined to transform the input data into a set of learned high-level features through a series of non-linear transformation.
 
-TODO: another pre-training methods, RBM pre-training.
+
+
+\begin{remark}
+If we regard the layer-wise pre-training as learning the representation of feature from the input data, then the whole pre-training process can be considered as learning the representation of the original data layer by layer. So, intuitively, learning the feature representation of data can be performed though training the deep neural networks.    
+\end{remark}
 
 \subsubsection{Fine-tuning}
 
 After pre-training, the weights between each adjacent layers can somehow reflect the relationship with the data themselves. Furthermore, in order to ensure a better performance, we use fine-tuning to adjust these weights according to different model types we assume.
 
-For the generative model,...
+For the discriminative model, back-propagation algorithm is used to adjust the detection weights by supervised learning using the labeled
+data. There¡¯s nothing new about the Back-propagation, the only thing we should pay attention to is that we should carefully set the learning rate since a too-big value will change the pre-trained weights a lot. However, we should also notice that there is a trade-off as a too-small value will lead to a slow tuning procedure.
 
-For the discriminative model,...
+For the generative model, a Wake-Sleep algorithm is used to tune the generative weights. Wake is a bottom-up procedure, which uses the learning RBM approach to approximate the joint distribution showed in the following term
+\begin{align}
+&P(v,h_1,h_2,\ldots h_n) \nonumber \\ = &P(h_1|v)P(h_2|h_1,v)\cdots 
+P(h_n|h_{n-1},\ldots,h_1,v).
+\end{align}
+Since detection weights are learned in this procedure, we can sample all the $v,h1,h2,\ldots,hn$. Then, these sampled data is used to tune the generative weights, which is to maximize term
+\begin{align}
+&P(v,h_1,h_2,\ldots h_n)\nonumber \\ =& P(h_{n-1}|h_n)P(h_{n-2}|h_{n-1},h_n)\cdots P(v|h_n,\ldots h_1).
+\end{align}
+Since all units are known, it is easy to solve this maximization problem.
+Therefore, wake stage is a ¡°bottom-up¡± procedure tuning the generative weights. Tuning only once is not enough, so we also need the sleep stage which is similar to wake, but it is ¡°top-down¡± approach and tunes the detection weights. We iteratively call the wake and sleep stages until the convergence is reached, which indicates the end of fine-tuning.
 
-
-
-
-
-\section{Unsupervised Feature Learning Algorithms}
-
-In this section, I'll discuss in detail about several typical unsupervised feature learning algorithms. I'll not only cover the details about how them work, but also try to give explanations on why them work.
-
-
-\subsection{Learning Feature Combination}
-
-TODO
-
-\subsection{Learning Feature Hierarchy}
-
-TODO
-
-\subsection{Another algorithm}
-
-TODO
 
 \section{Applications of Unsupervised Feature Learning}
 
-In this section, I'll refer to some successful real world application to show the usage as well as the benefit of feature learning. The first example I'd like to show is the unsupervised feature learning in Image Recognition
-And the second example I want to show is about the unsupervised feature learning in speech recognition.
+In the previous sections,p I have shown that why should we study feature learning, what strategy should we use in feature learning and what model should we apply in unsupervised feature learning. In this section, I'll refer to some successful real world applications to show the powerful usage of unsupervised feature learning as well as how the machine learning tasks benefit from the unsupervised feature learning.
 
-\subsection{Unsupervised Feature Learning in Image Recognition}
-TODO
 
 \subsection{Unsupervised Feature Learning in Speech Recognition}
-TODO
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=80mm]{cd-dnn-hmm.pdf}
+\caption{An illustration of learning feature representation by levels \cite{face}.}
+\label{fig:feat_level}
+\end{figure}
 
 
 
@@ -224,10 +247,15 @@ I would like to thank...
 \bibitem{new_frontier} I. Arel, D. C. Rose, and T. P. Karnowski, ``Research frontier: Deep machine learning-a new frontier in artificial intelligence research,'' \textit{Comp. Intell. Mag.}, vol. 5, no. 4, pp. 13--18, Nov. 2010.
 
 \bibitem{Hinton} G. E. Hinton, S. Osindero, and Y. Teh, ``A fast learning algorithm for deep belief nets,'' \textit{Neural Computation}, 18, pp 1527--1554, 2006.
+    
+\bibitem{visual} T. Serre, G. Kreiman, M. Kouh, C. Cadieu, U. Knoblich, and T. Poggio, ``A quantitative theory of immediate visual recognition,'' \textit{Progress in Brain Research, Computational Neuroscience: Theoretical Insights into Brain Function}, vol. 165, pp. 33--56, 2007.
+    
+\bibitem{AI} Y. Bengio, ``Learning deep architectures for AI,'' \textit{Foundations and Trends in Machine Learning}, vol 2, pp 1--127. Also published as a book. Now Publisher, 2009.
 
 \bibitem{greedy}  Y. Bengio, P. Lamblin, D. Popovici, and H. Larochelle, ``Greedy Layer-Wise Training of Deep Networks,'' \textit{Proc. Neural Information and Processing Systems}, 2006.
-    
+
 \bibitem{Frank} F. Seide, G. Li, and D. Yu, ``Conversational Speech Transcription Using Context-Dependent Deep Neural Networks'' \textit{Interspeech}, 2011.
+    
 
 
 \bibitem{dAE} P. Vincent, H. Larochelle, Y. Bengio, and P. Manzagol. ``Extracting and composing robust features with denoising autoencoders,'' \textit{Proc. Int'l Conf. Machine Learning}, 2008.
