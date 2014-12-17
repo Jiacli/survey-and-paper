@@ -23,7 +23,7 @@ amssymb,graphicx,epsfig,cite,psfrag,subfigure,algorithm,multirow,cases,balance}
 
 \begin{document}
 
-\title{Literature Survey -- Draft II \\ Unsupervised Feature Learning and Deep Learning}
+\title{Literature Survey \\ Unsupervised Feature Learning and Deep Learning}
 \author{Jiachen Li (Andrew ID: jiachenl)\\%
 Language Technologies Institute, Carnegie Mellon University, Pittsburgh, PA, 15213, USA\\
 Email: jiachenl@cs.cmu.edu
@@ -48,7 +48,7 @@ but even ruin the results. In this literature survey, I will do a review about t
 
 \section{Introduction}
 
-The performance of machine learning algorithms, especially the simpler ones  highly depends on how good the features are represented \cite{review}. For this reason, much of the effort in deploying machine learning algorithms in real problems has been paid to the process of feature extraction. During the past decades, feature extraction does play an very important role in the development of machine learning, where the machine learning research communities have spent a lot of efforts on manually designing or creating new features through domain knowledge and some other special techniques. For example, the MFCC feature in speech recognition and the HoG feature in computer vision. However, though these features may often contain the deep insights about a specific problem or some incredibly clever ideas, we cannot avoid the fact that the way to create such features costs a lot of human labor and the feature representation derived often cannot be extended to other problems, especially when we encounter into them in a new filed. So the problem comes up that is there any way to learn the feature representation automatically and is there any way to do better than the manually created features. Fortunately, the answer is yes to both of the questions, and the way is unsupervised feature learning.
+The performance of machine learning algorithms, especially the simpler ones  highly depends on how good the features are represented \cite{review}. For this reason, much of the effort in deploying machine learning algorithms in real problems has been paid to the process of feature extraction. During the past decades, feature extraction does play an very important role in the development of machine learning, where the machine learning research communities have spent a lot of efforts on manually designing or creating new features through domain knowledge and some other special techniques. For example, the MFCC feature in speech recognition and the HoG feature in computer vision. However, though these features may often contain the deep insights about a specific problem or some incredibly clever ideas, we cannot avoid the fact that the way to create such features costs a lot of human labor and the feature representation derived often cannot be extended to other problems, especially when we encounter into them in a new filed. So the problems that whether there is any way to learn the feature representation automatically and whether there is any way to do better than the manually created features come up. Fortunately, the answer is yes to both of the questions, and the way is unsupervised feature learning.
 
 \subsection{What Is Unsupervised Feature Learning?}
 
@@ -62,7 +62,7 @@ The performance of machine learning algorithms, especially the simpler ones  hig
 To answer the question that what is unsupervised feature learning, let's start by looking at the general framework of solving a machine learning task. To solve a machine learning problem, as shown in Fig. \ref{fig:ml_task}, we should first do pre-precessing for the raw data, such as the data cleaning, and then perform feature extraction on the data processed. After that, we apply our feature extraction algorithm to extract the useful features, do feature selection on these extracted features and then use them for training models. With a well trained model, we can finally approach to our goals like classification or regression.
 
 In the above framework, the procedures of pre-processing, feature extraction and feature selection together can be summarized as the ``feature learning''.
-Moreover, the term ``unsupervised'' means that we can this kind of feature learning procedures to be performed without our supervision (knowledge) or even without any of our help.
+Moreover, the term ``unsupervised'' means that we want this kind of feature learning procedures to be performed without our supervision (knowledge) or even without any of our help.
 
 \subsection{Differences with other Machine Learning Tasks}
 
@@ -70,9 +70,9 @@ Moreover, the term ``unsupervised'' means that we can this kind of feature learn
 
 One of the major differences that distinguishes unsupervised feature learning from other machine learning tasks such as classification is the ultimate goal during the training phase. To be specific, in the case of classification, the typical objective is to minimize the classification errors on the training set, so that we can learn a classifier or predictor for future use. However, in the unsupervised feature learning, the goal changes to learn the representation of feature automatically, which means the algorithms will make their own decisions on what is going to learn. Therefore, the features learned will no long be specified by human. And this is also totally different from the paradigm of feature engineering where people design by hands on what to learn.
 
-\subsection{Types of Unsupervised Feature Learning}
+%\subsection{Types of Unsupervised Feature Learning}
 
-There are two common unsupervised feature learning settings, depending on what type of unlabeled data you have. The more general and powerful setting is the self-taught learning setting, which does not assume that your unlabeled data $\mathbf{x}_u$ has to be drawn from the same distribution as your labeled data $\mathbf{x}_l$ \cite{self_taught}. The more restrictive setting where the unlabeled data comes from exactly the same distribution as the labeled data is sometimes called the semi-supervised learning setting. This distinctions is best explained with an example, which we now give.
+%There are two common unsupervised feature learning settings, depending on what type of unlabeled data you have. The more general and powerful setting is the self-taught learning setting, which does not assume that your unlabeled data $\mathbf{x}_u$ has to be drawn from the same distribution as your labeled data $\mathbf{x}_l$ \cite{self_taught}. The more restrictive setting where the unlabeled data comes from exactly the same distribution as the labeled data is sometimes called the semi-supervised learning setting. This distinctions is best explained with an example, which we now give.
 
 \subsection{Organization of this Review}
 
@@ -80,7 +80,7 @@ The reminder of this literature survey is organized as follows: Section II defin
 
 \section{Feature Learning Problem and Learning Strategy}
 
-Suppose that we have a large set labelled or unlabelled data as input, i.e., $$\mathcal{S}=\{\mathbf{x}^{(1)},\mathbf{x}^{(2)},\mathbf{x}^{(3)},\ldots\}, \ \mathbf{x}^{(i)}\in\mathcal{R}^n.$$
+Suppose that we have a large set of labelled or unlabelled data as input, i.e., $$\mathcal{S}=\{\mathbf{x}^{(1)},\mathbf{x}^{(2)},\mathbf{x}^{(3)},\ldots\}, \ \mathbf{x}^{(i)}\in\mathcal{R}^n.$$
 Then what the feature learning wants to do is to train a model
 \begin{equation}
 \Psi(\mathbf{x}):\mathcal{X} \rightarrow \mathcal{F},
@@ -112,7 +112,7 @@ For example, as shown in Fig. \ref{fig:feat_level}, if our visual system want to
 
 \begin{remark}
 The layer-based learning strategy is reasonable as it is consistent with the way human used to learn things. For example, if want learn the meaning of a paragraph, we may first want to learn the meaning of each single word.
-Next, with the meaning of each word and their combination in the sentences, we can learn the meaning of each sentence. Then with the meaningful of each sentence, it is much more easier for us to learn the meaning of the whole paragraph.
+Next, with the meaning of each word and their combination in the sentences, we can learn the meaning of each sentence. Then with the meaningful of each sentence, it is much easier for us to learn the meaning of the whole paragraph.
 \end{remark}
 
 \section{Feature Learning: Models and Algorithms}
@@ -128,12 +128,20 @@ Deep architecture refers to the model architecture that can learn multiple level
 
 In 2006, a breakthrough in feature learning and deep learning was initiated by Geoff Hinton, he introduced Deep Belief Networks (DBNs) together with a learning algorithm\cite{Hinton} and was quickly followed up in the same year by many others. The central idea, referred to as \textit{greedy layerwise unsupervised pre-training}, was to learn a hierarchy of features one level at a time, using unsupervised feature learning to learn a new transformation at each level to be composed with the previously learned transformations.
 
-Since 2006, deep networks for feature learning has been applied widely with success not only in classification tasks, but also in regression, dimensionality reduction, speech recognition, object segmentation, information retrieval, robotics, natural language processing and collaborative filtering\cite{AI}.
+Since 2006, deep networks for feature learning have been applied widely with success not only in classification tasks, but also in regression, dimensionality reduction, speech recognition, object segmentation, information retrieval, robotics, natural language processing and collaborative filtering\cite{AI}.
 
 
 \subsection{Deep Belief Networks (DBNs)}
 
-There are several types of deep neural networks such as deep belief networks (DBNs) and convolutional neural networks (CNNs). Among them DBNs is not only one of the milestones in the realm of deep learning, but also very capable for unsupervised feature learning. Therefore, in this part, I'll mainly focus on DBNs, and cover its details in learning feature representation.
+\begin{figure}[t]
+\centering
+\includegraphics[width=80mm]{dbn.pdf}
+\caption{Illustration of deep belief networks\cite{new_frontier}.}
+\label{fig:dbn}
+\end{figure}
+
+There are several types of deep neural networks such as deep belief networks (DBNs) and convolutional neural networks (CNNs). Among them DBNs are not
+only one of the milestones in the realm of deep learning, but also very capable for unsupervised feature learning. Therefore, in this part, I'll mainly focus on DBNs, and cover its details in learning feature representation.
 
 
 DBNs is a hybrid model consisting of two parts. As shown in Fig. \ref{fig:dbn}, the top two levels are undirected graph model which form the associative memory, the remaining layers are directed graph model which is actually a stacked Restricted Boltzmann Machines (RBM). Different from the CNNs, DBNs is a stochastically learning architecture whose object
@@ -152,12 +160,7 @@ where $x=h^0,\ P(h^{k-1}|h^k)$ is a conditional distribution for the visible uni
 
 The greatest advantage of DBNs is its capability of learning multi-level representation of feature, which is achieved through a layer-wise training strategy where the higher-level features are learned based on the features produced by the previous layers. Therefore, the higher-level features are believed to be more complicated and can better represent the information extracted from the structure of input data. Furthermore, we can also prove that after we adding another layer of features, we improve a variational lower bound on the log probability of the training data \cite{Hinton}.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=80mm]{dbn.pdf}
-\caption{Illustration of deep belief networks\cite{new_frontier}.}
-\label{fig:dbn}
-\end{figure}
+
 
 \subsection{Challenge of Training Deep Neural Networks}
 
@@ -189,7 +192,7 @@ If we regard the layer-wise pre-training as learning the representation of featu
 After pre-training, the weights between each adjacent layers can somehow reflect the relationship with the data themselves. Furthermore, in order to ensure a better performance, we use fine-tuning to adjust these weights according to different model types we assume.
 
 For the discriminative model, back-propagation algorithm is used to adjust the detection weights by supervised learning using the labeled
-data. There¡¯s nothing new about the Back-propagation, the only thing we should pay attention to is that we should carefully set the learning rate since a too-big value will change the pre-trained weights a lot. However, we should also notice that there is a trade-off as a too-small value will lead to a slow tuning procedure.
+data. There is nothing new about the Back-propagation, the only thing we should pay attention to is that we should carefully set the learning rate since a too-big value will change the pre-trained weights a lot. However, we should also notice that there is a trade-off as a too-small value will lead to a slow tuning procedure.
 
 For the generative model, a Wake-Sleep algorithm is used to tune the generative weights. Wake is a bottom-up procedure, which uses the learning RBM approach to approximate the joint distribution showed in the following term
 \begin{align}
@@ -204,9 +207,9 @@ Since all units are known, it is easy to solve this maximization problem.
 Therefore, wake stage is a ¡°bottom-up¡± procedure tuning the generative weights. Tuning only once is not enough, so we also need the sleep stage which is similar to wake, but it is ¡°top-down¡± approach and tunes the detection weights. We iteratively call the wake and sleep stages until the convergence is reached, which indicates the end of fine-tuning.
 
 
-\section{Applications of Unsupervised Feature Learning}
+\section{Applications of Unsupervised Feature Learning and Deep Learning}
 
-In the previous sections,p I have shown that why should we study feature learning, what strategy should we use in feature learning and what model should we apply in unsupervised feature learning. In this section, I'll refer to some successful real world applications to show the powerful usage of unsupervised feature learning as well as how the machine learning tasks benefit from the unsupervised feature learning.
+In the previous sections, I have shown that why we should study feature learning, what strategy we should  use in feature learning and what model we should  apply in unsupervised feature learning. In this section, I'll refer to some successful real world applications to show the powerful usage of unsupervised feature learning as well as how the machine learning tasks benefit from the unsupervised feature learning.
 
 
 \subsection{Unsupervised Feature Learning in Speech Recognition}
@@ -229,34 +232,127 @@ and a context-dependent part, or hierarchically decomposed. It has been commonly
 Only recently did Yu et al. discover
 that doing so is not only feasible but works very well \cite{cd-dnn-hmm}.
 As shown in Fig. \ref{fig:cd-dnn-hmm}, the Context-dependent Deep-Neural-Network HMMs (CD-DNN-
-HMMs) applies deep belief network as a feature learner to extract more powerful, more robust features and map them into different HMMs states. Utilizing Hinton's DBN pre-training (unsupervised feature learning) procedure, this model leads to a very promising results with a $22~33\%$ decrease in word error rate as shown in Table. I.
+HMMs) applies deep belief network as a feature learner to extract more powerful, more robust features and map them into different HMMs states. Utilizing Hinton's DBN pre-training (unsupervised feature learning) procedure, this model leads to a very promising results with a $22-33\%$ decrease in word error rate as shown in Table. I.
 
 
-\begin{table*}[ht]\label{Tab:1}
-\captionsetup{font={small}}
-\caption{Standard GMM-HMM vs. CD-DNN-HMM for single-pass speaker-independent recognition on five speech-to-text test sets. Also shown are our group's best-ever GMM-HMM result for three of the test sets. Transcription word-error rates are given in $\%$.}
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-acoustic model \& training & recognition mode & \multicolumn{2}{c|}{RT03S}  & Hub5'00 & \multicolumn{2}{c|}{voicemails} & teleconf \\
-& & FSH & SW & SWB & MS& LDC &  \\
-\hline\hline
+%\begin{table*}[ht]\label{Tab:1}
+%\captionsetup{font={small}}
+%\caption{Standard GMM-HMM vs. CD-DNN-HMM for single-pass speaker-independent recognition on five speech-to-text test sets. Also shown are our group's best-ever GMM-HMM result for three of the test sets. Transcription word-error rates are given in $\%$.}
+%\centering
+%\begin{tabular}{|c|c|c|c|c|c|c|c|}
+%\hline
+%acoustic model \& training & recognition mode & \multicolumn{2}{c|}{RT03S}  & Hub5'00 & \multicolumn{2}{c|}{voicemails} & teleconf \\
+%& & FSH & SW & SWB & MS& LDC &  \\
+%\hline\hline
 
-GMM 40-mix, ML, SWB 309h & single-pass SI & 30.2 & 40.9 & 26.5 & 45.0 & 33.5 & 35.2 \\
-GMM 40-mix, BMMI, SWB 309h & single-pass SI & 27.4&37.6 &23.6 &42.4 &30.8 &33.9 \\
-CD-DNN 7 layers x 2048, SWB 309h & single-pass SI & 18.5&27.5 &16.1 &32.9 &22.9 &24.4 \\
-(rel. change GMM BMMI¡úCD-DNN) & &(-33\%) &(-27\%) &(-32\%) &(-22\%) &(-26\%) &(-28\%) \\
-\hline\hline
-GMM 72-mix, BMMI, Fisher 2000h & multi-pass adaptive &18.6 &25.2 &17.1 & & & \\
-\hline
-\end{tabular}
-\end{table*}
+%GMM 40-mix, ML, SWB 309h & single-pass SI & 30.2 & 40.9 & 26.5 & 45.0 & 33.5 & 35.2 \\
+%GMM 40-mix, BMMI, SWB 309h & single-pass SI & 27.4&37.6 &23.6 &42.4 &30.8 &33.9 \\
+%CD-DNN 7 layers x 2048, SWB 309h & single-pass SI & 18.5&27.5 &16.1 &32.9 &22.9 &24.4 \\
+%(rel. change GMM BMMI¡úCD-DNN) & &(-33\%) &(-27\%) &(-32\%) &(-22\%) &(-26\%) &(-28\%) \\
+%\hline\hline
+%GMM 72-mix, BMMI, Fisher 2000h & multi-pass adaptive &18.6 &25.2 &17.1 & & & \\
+%\hline
+%\end{tabular}
+%\end{table*}
 
 \subsection{Unsupervised Feature Learning in Information Retrieval}
 
-TODO:...
+The unsupervised feature learning for Information Retrieval (IR) is rather recent. The approaches in the literature are mostly belong to the category 
+feature-based approaches. In this part, I will show an example
+on deep-structured semantic modeling (DSSM) for document retrieval.
 
-\section{Conclusions}
+Modern search engines retrieve documents mainly by matching the keywords in documents with those in the search query.
+However, lexical matching can be inaccurate due to the fact that a concept is often
+expressed using different vocabularies and language styles in documents
+and queries. Latent semantic models are able to map a query to its relevant documents at the semantic level where lexical-matching often
+fails. These models address the language discrepancy between
+Web documents and search queries by grouping different terms that
+occur in a similar context into the same semantic cluster. Thus, a query
+and a document, represented as two vectors in the lower-dimensional
+semantic space, can still have a high similarity even if they do not share
+any term. Probabilistic topic models such as probabilistic latent semantic models and latent Dirichlet allocation models have been proposed
+for semantic matching to partially overcome such difficulties. However,
+the improvement on IR tasks has not been as significant as originally
+expected because of two main factors:(1) most state-of-the-art latent
+semantic models are based on linear projection, and thus are inadequate
+and (2) these models are often trained in an unsupervised manner using
+an objective function that is only loosely coupled with the evaluation
+metric for the retrieval task.
+
+In order to improve semantic matching for IR, two lines of research have been conducted to extend the above latent semantic models. The first is the semantic hashing approach proposed by Salakhutdinov and Hinton \cite{hashing}, which is extended on semantic modeling using auto-encoder. They demonstrated that hierarchical semantic structure embedded
+in the query and the document can be extracted via unsupervised feature learning and deep learning.
+Superior performance to the conventional LSA is reported \cite{hashing}.
+However, in this approach the model parameters are
+optimized for the reconstruction of the documents rather than for
+differentiating the relevant documents from the irrelevant ones for
+a given query. As a result, the deep learning models do not
+significantly outperform the baseline retrieval models based on
+keyword matching.
+In the second line of research, click-through data, which consists of a list
+of queries and the corresponding clicked documents, is exploited for
+semantic modeling so as to bridge the language discrepancy between
+search queries and Web documents in recent studies \cite{click}. These
+models are trained on click-through data using objectives that tailor to
+the document ranking task. However, these click-through-based models
+are still linear, suffering from the issue of expressiveness. As a result,
+these models need to be combined with the keyword matching models
+(such as BM25) in order to obtain a significantly better performance
+than baselines.
+
+
+
+The DSSM approach introduced in \cite{dssm} aims to combine the strengths of the above two lines of work while overcoming their weaknesses.
+
+It uses the DNN architecture to capture complex semantic properties of the query and the document, and to rank a set of documents for a given query. Briefly, a nonlinear projection is performed first to map the query and the documents to a common semantic space. Then,
+the relevance of each document given the query is calculated as the
+cosine similarity between their vectors in that semantic space.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=80mm]{ir.pdf}
+\caption{The DNN component of the DSSM architecture for computing semantic
+features \cite{Yudong}.}
+\label{fig:ir}
+\end{figure}
+
+Fig. \ref{fig:ir} demonstrates the DNN part for unsupervised feature learning in DSSM framework. The DNN is used to map high-dimensional sparse text feature into low-dimensional dense features in a semantic space. The first hidden layer, with 30k units, accomplishes word hashing. The word-hashed features are then projected through multiple layers of non-linear projections. The final layer's neural activities in this DNN form the feature in the semantic space. Let $x$ denote the input term vector, $y$ as the output vector, $l_i\ i=1,\ldots,N-1$, as the intermediate hidden layers, $W_i$ as the $i$-th projection matrix, and $b_i$ as the $i$-th bias vector, we have
+\begin{align}\label{eq:dssm}
+  l_1&=W_1x \nonumber \\ 
+  l_i&=f(W_il_{i-1}+b_i),\ i>1 \nonumber \\
+  y&=f(W_N l_{N-1}+b_N),
+\end{align}
+where \textit{tanh} function $f(x)=\frac{1-e^{-2x}}{1+e^{-2x}}$ is used for hidden units and output layer, and the semantic relevance between a query Q and a document D can then be computed as the cosine distance
+\begin{equation}\label{cosine}
+  R(Q,D) = cosine(y_Q,y_D)=\frac{y_Q^T y_D}{\|y_Q\|\|y_D\|},
+\end{equation}
+where $y_Q$ and $y_D$ are the concept vectors of the query and the document respectively.
+
+The evaluation of the impact of using unsupervised feature learning in modeling semantic information embedded in a query and a document are shown in table \ref{tab:dssm}.
+
+\begin{table}[h]
+\captionsetup{font={small}}
+\caption{Comparative results with the previous state of the art
+approaches and various settings of DSSM.}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+No. & Models & NDCG@1 & NDCG@3  & NDCG@10 \\
+\hline\hline
+
+ 1 & TF-IDF & 0.319 & 0.382 & 0.462 \\ \hline
+ 2 & BM25 & 0.308 & 0.373 & 0.455 \\ \hline
+ 3 & DAE & 0.310 & 0.377 & 0.459 \\ \hline
+ \hline
+ 4 & DNN & 0.342 & 0.410 & 0.462 \\ \hline
+ 5 & L-WH linear & 0.357 & 0.422 & 0.495 \\ \hline
+ 6 & L-WH DNN & \textbf{0.362} & \textbf{0.425} & \textbf{0.498} \\ \hline
+\end{tabular}\label{tab:dssm}
+\end{table}
+Row 1 (TF-IDF) and row 2 (BM25) are baseline models, row 3 (DAE) is deep auto-encoder based semantic hashing model proposed by \cite{hashing}, row 4-6 present results of different settings of DSSM. To be specific, row 4 (DNN) is a DSSM without word hashing, row 5 (L-WH linear) is the model built using letter tri-gram based word hashing (L-WH) and row 6 is the best DNN-based semantic model. The results show that the deep structured semantic model is the best performer, beating other methods by a statistically significant margin in NDCG and demonstrating the empirical effectiveness of using DNNs and feature learning for semantic matching.
+
+\section{Limitation}
+
+\section{Conclusions and Future Work}
 
 Let machine learn the feature by themselves is fascinating as well as challenging, while the unsupervised feature learning gives us a chance to make it come true. In this literature survey, a broad overview of unsupervised feature learning on different aspects is given by answering the following questions, such as why we study unsupervised feature learning and deep learning, how to let machine learn feature representation by themselves, which model should we use for unsupervised feature learning and how can machine learning tasks benefit from unsupervised feature learning and deep learning. I not only show how the deep learning can be used for unsupervised feature learning, but also give an intuition about why it works. At last, many real world applications has been presented to show that unsupervised feature learning can be really helpful.
 
@@ -295,6 +391,15 @@ I would like to thank Prof. Eric Nyberg for his advice on my presentation and hi
 \bibitem{CNN} H. Lee, R. Grosse, R. Ranganath, and A. Y. Ng, ``Convolutional deep belief networks for scalable unsupervised learning of hierarchical representations,'' \textit{Proc. Int'l Conf. Machine Learning}, 2009.
 \bibitem{why} D. Erhan, Y. Bengio, A. Courville, P. Manzagol, P. Vincent, and S. Bengio, ``Why Does Unsupervised Pre-training Help Deep Learning?'' \textit{Journal of Machine Learning Research}, 2010.
 %\bibitem{kmeans} A. Coates and A. Y. Ng, ``Learning Feature Representations with K-means,'' \textit{Neural Networks: Tricks of the Trade}, Springer LNCS, 2012.
+
+\bibitem{hashing} R. Salakhutdinov and G. Hinton. ``Semantic hashing,'' In \textit{Proceedings of
+    Special Interest Group on Information Retrieval (SIGIR) Workshop on
+    Information Retrieval and Applications of Graphical Models.} 2007.
+    
+\bibitem{click} J. Gao, K. Toutanova, and W.-T. Yih, ``Clickthrough-basedlatent semantic models for web search,'' In \textit{Proceedings of Special Interest Group on
+Information Retrieval (SIGIR)}. 2011.
+
+\bibitem{dssm} P. Huang, X. He, J. Gao, L. Deng, A. Acero, and L. Heck, ``Learning deep structured semantic models for web search using clickthrough data,'' \textit{Association for Computing Machinery (ACM) International Conference Information and Knowledge Management (CIKM)}, 2013.
 
 \bibitem{Yudong} L. Deng and D. Yu ``DEEP LEARNING: Methods and Applications,'' NOW Publishers, 2014.
 
