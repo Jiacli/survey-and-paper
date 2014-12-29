@@ -4,7 +4,4 @@
 *.log
 *.gz
 *.bak
-/ignore/
-*.sav
-tex/literature_survey.pdf
 *.sav

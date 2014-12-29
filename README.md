@@ -1,4 +1,4 @@
-unsupervised-feature-learning
+Survey and Paper
 =============================
-
-Literature survey for unsupervised feature learning and deep learning
+unsupervised-feature-learning
+-Literature survey for unsupervised feature learning and deep learning
